@@ -1,0 +1,4 @@
+com\appinventAsses\MovieApi\Dao\MovieRepo.class
+com\example\interact\Controller\MovieController.class
+com\appinventAsses\MovieApi\MovieApisApplication.class
+com\appinventAsses\MovieApi\Model\Movie.class
