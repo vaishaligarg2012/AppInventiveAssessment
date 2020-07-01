@@ -1,6 +1,5 @@
 package com.appinventAsses.MovieApi.Controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,59 +15,57 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/movie")
 public class MovieController {
-	
-	 @Autowired
-	 MovieRepo movieRepo;
 
-	 
-	//Get all movies  
+	@Autowired
+	MovieRepo movieRepo;
+
+	// Get all movies
 	@GetMapping("/")
 	public List<Movie> getMovies() {
-        return  movieRepo.findAll();
-    }
+		return movieRepo.findAll();
+	}
 
-	//Get all movies by id
-    @GetMapping("/{id}")
-    public Movie getMovie(@PathVariable int id) throws Exception {
-    	Optional<Movie> movie = movieRepo.findById(id);
+	// Get all movies by id
+	@GetMapping("/{id}")
+	public Movie getMovie(@PathVariable int id) throws Exception {
+		Optional<Movie> movie = movieRepo.findById(id);
 
-    	if (!movie.isPresent())
-    		throw new Exception("id-" + id);
+		if (!movie.isPresent())
+			throw new Exception("id-" + id);
 
-    	return movie.get();
-    }
+		return movie.get();
+	}
 
-    //Add new movies to the db
-    @PostMapping("/addMovie")
-    public ResponseEntity<Object> addMovie(@RequestBody Movie movie){
-        Movie savedMovie = movieRepo.save(movie);
+	// Add new movies to the db
+	@PostMapping("/addMovie")
+	public ResponseEntity<Object> addMovie(@RequestBody Movie movie) {
+		Movie savedMovie = movieRepo.save(movie);
 
-    	URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-    			.buildAndExpand(savedMovie.getId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedMovie.getId())
+				.toUri();
 
-    	return ResponseEntity.created(location).build();
-    }
+		return ResponseEntity.created(location).build();
+	}
 
-    //Update movie by id from list 
-    @PutMapping("/updateMovie/{id}")
-    public ResponseEntity<Object>  update(@RequestBody Movie movie, @PathVariable int id){
-    	Optional<Movie> movieOptional = movieRepo.findById(id);
+	// Update movie by id from list
+	@PutMapping("/updateMovie/{id}")
+	public ResponseEntity<Object> update(@RequestBody Movie movie, @PathVariable int id) {
+		Optional<Movie> movieOptional = movieRepo.findById(id);
 
-    	if (!movieOptional.isPresent())
-    		return ResponseEntity.notFound().build();
+		if (!movieOptional.isPresent())
+			return ResponseEntity.notFound().build();
 
-    	movie.setId(id);
-    	
-    	movieRepo.save(movie);
+		movie.setId(id);
 
-    	return ResponseEntity.noContent().build();
-    }
+		movieRepo.save(movie);
 
-    //Delete movie by id
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id){
-    	   movieRepo.deleteById(id);
-    }
+		return ResponseEntity.noContent().build();
+	}
 
-   
+	// Delete movie by id
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable int id) {
+		movieRepo.deleteById(id);
+	}
+
 }
