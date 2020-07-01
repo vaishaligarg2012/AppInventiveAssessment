@@ -20,11 +20,14 @@ public class MovieController {
 	 @Autowired
 	 MovieRepo movieRepo;
 
-	 @GetMapping("/")
+	 
+	//Get all movies  
+	@GetMapping("/")
 	public List<Movie> getMovies() {
         return  movieRepo.findAll();
     }
 
+	//Get all movies by id
     @GetMapping("/{id}")
     public Movie getMovie(@PathVariable int id) throws Exception {
     	Optional<Movie> movie = movieRepo.findById(id);
@@ -35,6 +38,7 @@ public class MovieController {
     	return movie.get();
     }
 
+    //Add new movies to the db
     @PostMapping("/addMovie")
     public ResponseEntity<Object> addMovie(@RequestBody Movie movie){
         Movie savedMovie = movieRepo.save(movie);
@@ -45,6 +49,7 @@ public class MovieController {
     	return ResponseEntity.created(location).build();
     }
 
+    //Update movie by id from list 
     @PutMapping("/updateMovie/{id}")
     public ResponseEntity<Object>  update(@RequestBody Movie movie, @PathVariable int id){
     	Optional<Movie> movieOptional = movieRepo.findById(id);
@@ -59,6 +64,7 @@ public class MovieController {
     	return ResponseEntity.noContent().build();
     }
 
+    //Delete movie by id
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id){
     	   movieRepo.deleteById(id);
